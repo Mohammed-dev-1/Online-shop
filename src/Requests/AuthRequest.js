@@ -1,37 +1,9 @@
-const AppError = require('../util/errors-handling/app.error');
+const { body } = require('express-validator');
+const validate = require('../util/request-body-handling/requestBodyValidation');
 
-exports.requestValidate = (req, res, next) => {
-  const {username, email, password} = req.body;
+const AuthRequestValidation = _=> validate([
+  body('email').isEmail().withMessage('This is not a valid email.'),
+  body('password').isLength({min: 6, max: 12}).withMessage('Password must be between 6 and 12 char.')
+]);
 
-  try {
-    //validate request body
-    if(!username || !email || !password)
-      throw new AppError(messageValidator(req.body));
-
-    next();
-  }
-  catch (err) {
-    console.log(err.errors);
-  }
-}
-
-const messageValidator = (payload) => {  
-  const errors = [];
-  if (!payload.username && payload.username != undefined) {
-    errors.push({ message: 'Username is required.' });
-  } 
-
-  if (!payload.email) {
-    errors.push({ message: 'Email is required.' });
-  }
-
-  if (!payload.password) {
-    errors.push({ message: 'Password is required.' });
-  }
-
-  if (payload.email) {
-    errors.push({ message: 'This user already exist.' });
-  }
-  
-  return errors;
-}
+module.exports = AuthRequestValidation;

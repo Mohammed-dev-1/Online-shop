@@ -10,7 +10,7 @@ const {
   flash,
   csrf,
   bodyParser,
-  sqlSessionConnection, 
+  // sqlSessionConnection, 
   adminRoutes, 
   authRoutes, 
   cartRoutes, 
@@ -19,6 +19,7 @@ const {
   profileRoutes,
   productRoutes,
   page404Routes, 
+  authAPI, 
   initUserMeddleware,
   RunRelation
 } = require('./env');
@@ -42,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'src', 'public')));
 app.use(
   session({
     secret: 'Vector',
-    store: new sqlSessionConnection({db: db}),
+    // store: new sqlSessionConnection({db: db}),
     resave: false,
     proxy: true,
     saveUninitialized: false,
@@ -78,6 +79,7 @@ app.use('/cart', cartRoutes);
 app.use('/order', orderRoutes);
 app.use('/profile', profileRoutes);
 app.use('/product', productRoutes);
+app.use('/api', authAPI);
 app.use(homeRoutes);
 app.use(page404Routes);
 

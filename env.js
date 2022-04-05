@@ -7,8 +7,9 @@ exports.flash = require('connect-flash');
 exports.csrf = require('csurf');
 
 exports.db = require('./src/util/connection');
-exports.sqlSessionConnection = require("connect-session-sequelize")(this.session.Store);
+// exports.sqlSessionConnection = require("connect-session-sequelize")(this.session.Store);
 
+// Web routes
 exports.authRoutes = require('./src/routes/auth');
 exports.profileRoutes = require('./src/routes/profile');
 exports.productRoutes = require('./src/routes/product');
@@ -17,6 +18,9 @@ exports.homeRoutes = require('./src/routes/home');
 exports.cartRoutes = require('./src/routes/cart');
 exports.orderRoutes = require('./src/routes/order');
 exports.page404Routes = require('./src/routes/pageNotFound');
+
+// API routes
+exports.authAPI = require('./src/routes/API/auth');
 
 const { initUser } = require('./src/util/middleware/auth.middleware');
 exports.initUserMeddleware = initUser;

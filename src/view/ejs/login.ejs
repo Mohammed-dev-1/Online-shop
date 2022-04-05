@@ -12,7 +12,13 @@
     <form class="product-form" action="/auth/login" method="POST">
       <div class="form-control">
         <label for="email">Email</label>
-        <input required type="email" name="email" id="email">
+        <input 
+          required 
+          type="email" 
+          name="email" 
+          id="email"
+          value="<%= body.length ? body[0].email : '' %>"  
+        >
 
         <label for="password">Password</label>
         <input required type="password" name="password" id="password">

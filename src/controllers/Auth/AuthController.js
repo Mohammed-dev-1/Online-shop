@@ -6,7 +6,8 @@ exports.registerPage = (req, res, next) => {
   res.status(200).render('register',{
     pageTitle: 'Register page',
     pagePath: '/auth/register',
-    errors: req.flash('error')
+    errors: req.flash('error'),
+    body: req.flash('body')
   });
 }
 
@@ -14,17 +15,15 @@ exports.loginPage = (req, res, next) => {
   res.status(200).render('login',{
     pageTitle: 'Login page',
     pagePath: '/auth/login',
-    errors: req.flash('error')
+    errors: req.flash('error'),
+    body: req.flash('body')
   });
 }
 
 exports.register = async (req, res, next) => {
   let {username, email, password} = req.body;
 
-  try {
-    //validate request body
-    if(!username || !email || !password) throw new AppError(messageValidator(req.body));
-    
+  try {    
     //check if user already exist.
     const user = await User.sequelize
     .query('SELECT email from users where email = ?', {
@@ -55,11 +54,8 @@ exports.register = async (req, res, next) => {
   } 
   catch(err) {
     req.flash('error', err.errors);
-    res.status(404).render('register',{
-      pageTitle: 'Register page',
-      pagePath: '/auth/register',
-      errors: err.errors
-    });
+    req.flash('body', req.body);
+    res.redirect('back');
   }
 }
 
@@ -67,9 +63,6 @@ exports.login = async (req, res, next) => {
   const {email, password} = req.body;
 
   try {
-    //validate request..
-    if(!email || !password) throw new AppError(messageValidator(req.body));
-
     const user_session_data = await User.findOne({ where: { email: email } })
     //check user if not have an account..
     if (!user_session_data) throw new AppError([{message: 'Email or password was wrong.'}]);  
@@ -86,11 +79,9 @@ exports.login = async (req, res, next) => {
     })
   } 
   catch(err) {
-    res.status(404).render('login',{
-      pageTitle: 'Login page',
-      pagePath: '/auth/login',
-      errors: err.errors
-    });
+    req.flash('error', err.errors);
+    req.flash('body', req.body);
+    res.redirect('back');
   }
 }
 
@@ -103,21 +94,8 @@ exports.logout = (req, res, next) => {
 
 const messageValidator = (payload) => {  
   const errors = [];
-  if (!payload.username && payload.username != undefined) {
-    errors.push({ message: 'Username is required.' });
-  } 
-
-  if (!payload.email) {
-    errors.push({ message: 'Email is required.' });
-  }
-
-  if (!payload.password) {
-    errors.push({ message: 'Password is required.' });
-  }
-
   if (payload.email) {
     errors.push({ message: 'This user already exist.' });
-  }
-  
+  }  
   return errors;
 }
