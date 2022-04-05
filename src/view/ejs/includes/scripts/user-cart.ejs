@@ -1,0 +1,35 @@
+<script>
+  let cartList = [];
+  const item = {};
+
+  const addToCart = itemDom => {
+    const domSelect = itemDom.parentNode.parentNode;
+    
+    cartList = getFromLocalStorage();
+    item.ownerName = domSelect.querySelectorAll('.card__header .product__title')[0].innerText;
+    item.title = domSelect.querySelectorAll('.card__header .product__title')[1].innerText;
+    item.price = domSelect.querySelector('.card__content .product__price').innerText;
+    item.description = domSelect.querySelector('.card__content .product__description').innerText;
+
+    cartList.push(item);
+    localStorage.setItem('cart', JSON.stringify(cartList));
+  }
+
+  const removeFromCart = itemIndex => {
+    //get user products from localsotrage cart
+    userCart = getFromLocalStorage();
+
+    //remove specific product by passing index of product
+    userCart.splice(itemIndex, 1);
+
+    //reset user cart to localStorage
+    localStorage.setItem('cart', JSON.stringify(userCart));
+    
+    //reinit dom to load current products cart
+    initCartDom();
+  }
+
+  const getFromLocalStorage = _=> {
+    return JSON.parse(localStorage.getItem('cart')) || [];
+  }
+</script>

@@ -1,0 +1,66 @@
+<%- include('./includes/head.ejs') %>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+  <%- include('./includes/navigation.ejs') %> 
+  <%- include('./util/errors-message.ejs', {errors}) %> 
+  <h1>My orders: </h1>
+  <main>
+    <% if (productOrdered.length > 0) { %>
+      <% productOrdered.forEach(item => { %>
+        <h3>Order number: <%= item.id%></h3>
+        <p>Orderd at: <%= new Date(item.createdAt).toISOString().substring(0, 10)%></p>
+        <div class="grid">
+          <% item.products.forEach(product => { %>
+            <article class="card product-item">
+              <header class="card__header">
+                <p class="product__title">
+                  <%= product.title %>
+                </p>
+              </header>
+              <!-- <div class="card__image"> -->
+                <!-- <img 
+                  width="200"
+                  height="200"
+                  src="https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png" 
+                  alt="A Book"
+                > -->
+              <!-- </div> -->
+              <div class="card__content">
+                <p class="product__price">
+                  <span>Price:</span> <%= product.price %>$
+                </p>
+                <p class="product__title">
+                  <span>Quantity:</span> <%= product.orderItem.quantity %>
+                </p>
+                <p class="product__title">
+                  <span>Owner name:</span>
+                  <a href="/profile/<%= product.user.id %>">
+                    <%= product.user.name %>
+                  </a>
+                </p>
+                <p class="product__description">
+                  <span>Description:</span> <%= product.description %>..
+                </p>
+              </div>
+              <div class="card__actions">
+                <a href="/product/<%= product.id %>" class="btn">
+                  Details
+                </a>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+        <hr>
+      <% }) %>
+    <% } else { %>
+      <p>No products ordered yet..</p>
+    <% } %>
+
+    <a href="/" class="home_button">
+      Back to home..
+    </a>
+  </main>
+<%- include('./includes/end.ejs') %> 

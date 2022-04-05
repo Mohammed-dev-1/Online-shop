@@ -1,0 +1,64 @@
+<%- include('./includes/head.ejs') %>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+  <%- include('./includes/navigation.ejs') %> 
+  <%- include('./util/errors-message.ejs', {errors}) %>
+  <main>
+    <div>
+      <div class="grid">
+      <% if (prods.length > 0) { %>
+        <% for(let item of prods) { %>
+          <article class="card product-item">
+            <header class="card__header">
+              <p class="product__title">
+                <%= item.title %>
+              </p>
+            </header>
+            <!-- <div class="card__image"> -->
+              <!-- <img 
+                width="200"
+                height="200"
+                src="https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png" 
+                alt="A Book"
+              > -->
+            <!-- </div> -->
+            <div class="card__content">
+              <p class="product__price">
+                <span>Price:</span> <%= item.price %>$
+              </p>
+              <p class="product__title">
+                <span>Owner name:</span>
+                <a href="/profile/<%= item.userId %>">
+                  <%= item.user.name %>
+                </a>
+              </p>
+              <p class="product__description">
+                <span>Description:</span> <%= item.description %>..
+              </p>
+            </div>
+            <div class="card__actions">
+              <% if(isLoggedIn && userId != item.user.id) { %>
+                <form action="/cart/<%= item.id %>" method="POST">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+                  <button type="submit" class="btn">
+                    Add to Cart
+                  </button>
+                </form>
+              <% } %>
+              <a href="/product/<%= item.id %>" class="btn">
+                Details
+              </a>
+            </div>
+          </article>
+        <% } %>
+      <% } else { %>
+        <p>No products..</p>
+      <% } %>
+      </div>
+    </div>
+    <!-- <p>List of all the products...</p> -->
+  </main>
+<%- include('./includes/end.ejs') %>
