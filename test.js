@@ -120,7 +120,7 @@ class Test {
 }
 console.log([1,2,3,4,5].filter(e=>e>2).map(e=>e*2));
 let testClass = new Test();
-console.log(testClass.multiNumber().number);
+console.log(testClass.multiNumber().number); //? 
 console.log(testClass.incNumber().number);
 console.log(testClass.incNumber().multiNumber().number);
 
@@ -134,5 +134,6 @@ ElementRef.prototype.unicha = function() {
 }
 
 
-const test = new ElementRef('mohammed', 'vector');
+const test = new ElementRef('mohammed', 'vector'); //? console.log(test)
+test //?
 console.log(test.__proto__.unicha);

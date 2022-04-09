@@ -1,6 +1,7 @@
 const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 const AppError = require('../util/errors-handling/app.error');
+const {path} = require('../../env')
 
 exports.page = (req, res, next) => {
     res.status(200).render('add-product', {
@@ -32,7 +33,8 @@ exports.details = async (req, res, next) => {
 
 exports.create = async (req, res, next) => {
     const {title, price, description} = req.body;
-    
+    const imageFile = req.file;
+    console.log('test here: ', imageFile);
     try {
         if (!title || !price || !description) throw new AppError([{message:'Please add product details.'}])
         if (!req.user) throw new AppError([{message:'You need to login.'}]);
@@ -43,7 +45,7 @@ exports.create = async (req, res, next) => {
         res.status(201).redirect('/');
     } catch (error) {
         req.flash('error', error.errors);
-        res.redirect('/product');
+        res.redirect('back');
     }
 }
 

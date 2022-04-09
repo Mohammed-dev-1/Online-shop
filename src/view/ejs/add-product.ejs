@@ -8,24 +8,35 @@
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
   <main>
-    <form class="product-form" action="/product" method="POST">
+    <form class="product-form" action="/product" method="POST" enctype="multipart/form-data">
       <div class="form-control">
         <label for="title">Title</label>
         <input type="text" name="title" id="title">
         
         <label for="title">Price</label>
         <input type="number" name="price" id="price">
-        
+
         <label for="title">Description</label>
         <textarea 
           name="description" 
           id="description" 
-          cols="40" 
+          cols="38" 
           rows="10"
         ></textarea>
+        
+        <label style="margin: 10px 0px;" for="image">
+          <div type="button" class="btn">Upload a product panel</div>
+          <input 
+            style="display: none;"
+            type="file" 
+            accept="image/*" 
+            name="image" 
+            id="image"
+          >
+        </label>
       </div>
       
-      <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <button class="btn" type="submit">
         Add Product
       </button>

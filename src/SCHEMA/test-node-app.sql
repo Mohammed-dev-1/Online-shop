@@ -1,5 +1,5 @@
 -- Get all data
-select * from produ	cts;
+select * from products;
     
 -- fetch by id
 select * 

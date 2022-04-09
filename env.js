@@ -5,9 +5,12 @@ exports.bodyParser = require('body-parser');
 exports.cors = require('cors');
 exports.flash = require('connect-flash');
 exports.csrf = require('csurf');
+exports.multer = require('multer');
+exports.cookieParser = require('cookie-parser');
+
 
 exports.db = require('./src/util/connection');
-// exports.sqlSessionConnection = require("connect-session-sequelize")(this.session.Store);
+exports.sqlSessionConnection = require("connect-session-sequelize")(this.session.Store);
 
 // Web routes
 exports.authRoutes = require('./src/routes/auth');
@@ -24,6 +27,8 @@ exports.authAPI = require('./src/routes/API/auth');
 
 const { initUser } = require('./src/util/middleware/auth.middleware');
 exports.initUserMeddleware = initUser;
+
+exports.fileUploadConfigrations = require('./src/util/Upload-config/index.config');
 
 const { RunRelation } = require('./src/data/index');
 exports.RunRelation = RunRelation;

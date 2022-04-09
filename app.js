@@ -1,15 +1,16 @@
 const {
   db,
-  cors, 
-  path, 
   app,
   port,
-  TWO_HOURS,
-  express,
-  session,
-  flash,
+  cors, 
   csrf,
+  path, 
+  flash,
+  session,
+  express,
+  TWO_HOURS,
   bodyParser,
+  cookieParser,
   // sqlSessionConnection, 
   adminRoutes, 
   authRoutes, 
@@ -21,11 +22,9 @@ const {
   page404Routes, 
   authAPI, 
   initUserMeddleware,
+  fileUploadConfigrations,
   RunRelation
 } = require('./env');
-  
-//Set pug as render engine
-// app.set('view engine', 'pug');
 
 //Set EJS as render engine
 app.set('view engine', 'ejs');
@@ -39,6 +38,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //use express static method to load all css files
 app.use(express.static(path.join(__dirname, 'src', 'public')));
+//use multer to handle files
+app.use(fileUploadConfigrations);
+// app.use(express.static('uploads'));
 
 app.use(
   session({
@@ -55,15 +57,17 @@ app.use(
   })
 );
 
+//Alterantive package to upload files...
+// app.use(fileUpload({
+//   createParentPath: true
+// }));
+app.use(cookieParser('Vector'));
 //check authorization user for every request...
 app.use(initUserMeddleware);
-
-//init csrf token for more scure
-app.use(csrf());
-
 //init flash message for every request...
 app.use(flash());
-
+//init csrf token for more scure
+app.use(csrf({cookie: true}));
 //set a local variables to all respones...
 app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();

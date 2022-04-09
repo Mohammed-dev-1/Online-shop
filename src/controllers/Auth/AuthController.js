@@ -16,7 +16,8 @@ exports.loginPage = (req, res, next) => {
     pageTitle: 'Login page',
     pagePath: '/auth/login',
     errors: req.flash('error'),
-    body: req.flash('body')
+    body: req.flash('body'),
+    // csrfToken: req.csrfToken()
   });
 }
 

@@ -2,7 +2,7 @@ const Users = require('../../data/model/user.model');
 
 //protect all page need to login..
 exports.isAuthorize = (req, res, next) => {
-  return !!req.user ? next() : res.redirect('/auth/login');
+  return !!req.session.user ? next() : res.redirect('/auth/login');
 }
 
 //protect login and register page..
