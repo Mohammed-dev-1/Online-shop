@@ -7,16 +7,21 @@ const validate = validations => {
     ));
 
     const errors = validationResult(req);
-    
     if(errors.isEmpty()) return next();
-
+    
+    //WEB respones
     req.flash('error', 
       errors.array().map(
         err => {return {message: err.msg}}
       )
     );
     req.flash('body', req.body);
-    res.redirect('back');
+    return res.redirect('back');
+    
+    //API respones
+    // return res.json(errors.array().map(
+    //   err => {return {message:err.msg}}
+    // ));
   }
 }
 

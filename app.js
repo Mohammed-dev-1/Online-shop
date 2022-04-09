@@ -57,6 +57,9 @@ app.use(
   })
 );
 
+//for testing api
+app.use('/api', authAPI);
+
 //Alterantive package to upload files...
 // app.use(fileUpload({
 //   createParentPath: true
@@ -83,7 +86,6 @@ app.use('/cart', cartRoutes);
 app.use('/order', orderRoutes);
 app.use('/profile', profileRoutes);
 app.use('/product', productRoutes);
-app.use('/api', authAPI);
 app.use(homeRoutes);
 app.use(page404Routes);
 
