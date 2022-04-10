@@ -7,7 +7,8 @@ exports.page = (req, res, next) => {
     res.status(200).render('add-product', {
         pageTitle: 'Add Products',
         pagePath: '/product',
-        errors: req.flash('error')        
+        errors: req.flash('error'),
+        body: req.flash('body')        
     });
 }
 

@@ -38,8 +38,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //use express static method to load all css files
 app.use(express.static(path.join(__dirname, 'src', 'public')));
-//use multer to handle files
-app.use(fileUploadConfigrations);
 // app.use(express.static('uploads'));
 
 app.use(
@@ -69,6 +67,8 @@ app.use(cookieParser('Vector'));
 app.use(initUserMeddleware);
 //init flash message for every request...
 app.use(flash());
+//use multer to handle files
+app.use(fileUploadConfigrations);
 //init csrf token for more scure
 app.use(csrf({cookie: true}));
 //set a local variables to all respones...

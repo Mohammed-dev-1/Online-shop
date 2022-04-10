@@ -8,7 +8,7 @@ const validate = validations => {
 
     const errors = validationResult(req);
     if(errors.isEmpty()) return next();
-    
+
     //WEB respones
     req.flash('error', 
       errors.array().map(
@@ -16,7 +16,7 @@ const validate = validations => {
       )
     );
     req.flash('body', req.body);
-    return res.redirect('back');
+    res.redirect('back');
     
     //API respones
     // return res.json(errors.array().map(
