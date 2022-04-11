@@ -1,5 +1,4 @@
 const { multer, path } = require('../../../env');
-console.log(path.join(__dirname, '..', '..', 'product-panel'));
 const fileStorage = multer.diskStorage({
   destination: (req, file, callBack) => {
     /**

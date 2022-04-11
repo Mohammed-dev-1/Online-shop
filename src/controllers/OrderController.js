@@ -60,7 +60,7 @@ exports.add = async (req, res, next) => {
   }
   catch(err) {
     req.flash('error', err.errors);
-    res.redirect('/cart');
+    res.redirect('back');
     console.log(err.message);
   }
 }
@@ -69,15 +69,8 @@ exports.getInvoice = (req, res, next) => {
   const orderId = req.params.id;
   const invoiceName = `invoice-${orderId}.pdf`;
   const invoicePath = path.join('src','invoices',invoiceName);
-
-  fs.readFile(invoicePath, (err, data) => {
-    if(err) {
-      console.log(err);
-      return;
-    }
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
-    res.send(data);
-  });
+  const stream = fs.createReadStream(invoicePath)
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
+  stream.pipe(res);
 }

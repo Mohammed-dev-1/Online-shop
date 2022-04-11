@@ -40,7 +40,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'src', 'public')));
 //use express static method to load images, add /product-panel to load just images with this path
 app.use('/src/product-panel', express.static(path.join(__dirname, 'src', 'product-panel')));
-// app.use(express.static('uploads'));
 
 app.use(
   session({
