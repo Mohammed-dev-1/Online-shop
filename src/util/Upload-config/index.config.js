@@ -6,7 +6,7 @@ const fileStorage = multer.diskStorage({
      * first arg for passing an error
      * second one is a folder to store image inside of it
      */
-    callBack(null, path.join(__dirname, '..', '..', 'product-panel'));
+    callBack(null, 'src/product-panel');
   },
   filename: (req, file, callBack) => {
     /**

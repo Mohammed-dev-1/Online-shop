@@ -16,6 +16,10 @@ const Product = db.define('product', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  imagePath: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   price: {
     type: Sequelize.DOUBLE,
     allowNull: false,

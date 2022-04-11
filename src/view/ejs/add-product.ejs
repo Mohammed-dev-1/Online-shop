@@ -32,13 +32,13 @@
           id="description" 
           cols="38" 
           rows="10"
-        ><%= body.length ? body[0].description : '' %>
-        </textarea>
+        ><%= body.length ? body[0].description : '' %></textarea>
         
         <label style="margin: 10px 0px;" for="image">
           <div type="button" class="btn">Upload a product panel</div>
           <input 
             style="display: none;"
+            accept="image/*"
             type="file" 
             name="image" 
             id="image"

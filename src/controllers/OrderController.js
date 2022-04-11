@@ -1,6 +1,8 @@
 const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 const AppError = require('../util/errors-handling/app.error');
+const fs = require('fs');
+const {path} = require('../../env');
 
 exports.page = async (req, res, next) => {
   try {
@@ -61,4 +63,21 @@ exports.add = async (req, res, next) => {
     res.redirect('/cart');
     console.log(err.message);
   }
+}
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.id;
+  const invoiceName = `invoice-${orderId}.pdf`;
+  const invoicePath = path.join('src','invoices',invoiceName);
+
+  fs.readFile(invoicePath, (err, data) => {
+    if(err) {
+      console.log(err);
+      return;
+    }
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
+    res.send(data);
+  });
 }

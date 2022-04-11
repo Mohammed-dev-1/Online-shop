@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 
 exports.userLoginValidation = async (value, { req, location, path }) => {
   try {
+    if(req.body.password.length < 6) return true;
+
     //check user if not have an account..
     const user = await User.findOne({ where: { email: value } })
     if (!user) return Promise.reject('Email or password was wrong.');  
@@ -12,6 +14,7 @@ exports.userLoginValidation = async (value, { req, location, path }) => {
     if (!passwordValidate) return Promise.reject('Email or password was wrong.')
 
     req.userValidated = user;
+    return true;
   } 
   catch(err) {
     console.log(err.message);

@@ -6,8 +6,8 @@
 <body>
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
-  <h1>My orders: </h1>
-  <main>
+  <h1 style="padding-left: 10px;">My orders: </h1>
+  <main style="padding: 5px 15px 40px 15px;">
     <% if (productOrdered.length > 0) { %>
       <% productOrdered.forEach(item => { %>
         <h3>Order number: <%= item.id%></h3>
@@ -20,14 +20,6 @@
                   <%= product.title %>
                 </p>
               </header>
-              <!-- <div class="card__image"> -->
-                <!-- <img 
-                  width="200"
-                  height="200"
-                  src="https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png" 
-                  alt="A Book"
-                > -->
-              <!-- </div> -->
               <div class="card__content">
                 <p class="product__price">
                   <span>Price:</span> <%= product.price %>$
@@ -53,14 +45,11 @@
             </article>
           <% }) %>
         </div>
-        <hr>
+        <a href="/order/<%= item.id %>/invoice" class="btn">Get my invoice</a>
+        <hr style="margin-top: 20px;">
       <% }) %>
     <% } else { %>
       <p>No products ordered yet..</p>
     <% } %>
-
-    <a href="/" class="home_button">
-      Back to home..
-    </a>
   </main>
 <%- include('./includes/end.ejs') %> 

@@ -38,6 +38,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 //use express static method to load all css files
 app.use(express.static(path.join(__dirname, 'src', 'public')));
+//use express static method to load images, add /product-panel to load just images with this path
+app.use('/src/product-panel', express.static(path.join(__dirname, 'src', 'product-panel')));
 // app.use(express.static('uploads'));
 
 app.use(
