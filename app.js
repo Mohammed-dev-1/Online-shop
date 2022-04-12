@@ -11,7 +11,7 @@ const {
   TWO_HOURS,
   bodyParser,
   cookieParser,
-  // sqlSessionConnection, 
+  sqlSessionConnection, 
   adminRoutes, 
   authRoutes, 
   cartRoutes, 
@@ -44,7 +44,7 @@ app.use('/src/product-panel', express.static(path.join(__dirname, 'src', 'produc
 app.use(
   session({
     secret: 'Vector',
-    // store: new sqlSessionConnection({db: db}),
+    store: new sqlSessionConnection({db: db}),
     resave: false,
     proxy: true,
     saveUninitialized: false,

@@ -1,8 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+
+const {createInvoiceReport} = require('./helpers/pdf.helper');
+
 const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 const AppError = require('../util/errors-handling/app.error');
-const fs = require('fs');
-const {path} = require('../../env');
 
 exports.page = async (req, res, next) => {
   try {
@@ -65,12 +68,31 @@ exports.add = async (req, res, next) => {
   }
 }
 
-exports.getInvoice = (req, res, next) => {
-  const orderId = req.params.id;
-  const invoiceName = `invoice-${orderId}.pdf`;
-  const invoicePath = path.join('src','invoices',invoiceName);
-  const stream = fs.createReadStream(invoicePath)
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
-  stream.pipe(res);
+exports.getInvoice = async (req, res, next) => {
+  const invoiceName = `invoice-${req.params.id}.pdf`;
+  const order = req.order;
+  let totalPrice = 0;
+  let products = [];
+
+  try {
+    products = await order.getProducts();
+    products.forEach(product => {
+      totalPrice += product.price * product.orderItem.quantity;
+    });
+  } catch(err) {
+    console.log(err.message);    
+    return res.redirect('back');
+  }
+
+  try {
+    const invoicePath = path.join('src','invoices',invoiceName);    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`);
+    
+    createInvoiceReport(res, invoicePath, products, order, totalPrice);
+  }
+  catch(err) {
+    console.log(err.message);
+    res.redirect('back');
+  }
 }
