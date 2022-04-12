@@ -35,6 +35,7 @@
         ><%= body.length ? body[0].description : '' %></textarea>
         
         <label style="margin: 10px 0px;" for="image">
+          <img width="320" height="320" id="image-selected">
           <div type="button" class="btn">Upload a product panel</div>
           <input 
             style="display: none;"
@@ -52,4 +53,5 @@
       </button>
     </form>
   </main>
+<%- include('./includes/scripts/select-image.ejs') %> 
 <%- include('./includes/end.ejs') %> 

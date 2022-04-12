@@ -1,5 +1,4 @@
 const AppError = require('../util/errors-handling/app.error');
-const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 
 exports.page = async (req, res, next) => {
@@ -19,20 +18,23 @@ exports.page = async (req, res, next) => {
   }
 }
 
-exports.add = async (req, res, next) => {
+exports.product = (req, res, next) => {
   try {
-    let quantity = 1;
     const productId = +req.params.id
-    const product = await Product.findByPk(productId);
     
-    if(!product) throw new AppError([{message:'Product not found!'}]);
-    
-    if(req.user.id == product.userId) 
-      throw new AppError([{message:'Can\'t add product to cart with the same user'}]);
+    if(req.query.mode == 'edit') editDetails(req, res);
+    else addToCart(req, res, productId);
+  }
+  catch(err) {
+    console.log(err.message);
+    res.redirect('back');
+  }
+}
 
-    const userCart = await req.user.getCart();
-    if(!userCart) throw new AppError([{message:'User don\'t have a cart!'}]);
-    
+const addToCart = async (req, res, productId) => {
+  let quantity = 1;
+  try {
+    const userCart = await req.user.getCart();    
     const productInCart = await userCart.getProducts({
       where: {id: productId}
     });
@@ -43,11 +45,22 @@ exports.add = async (req, res, next) => {
     
     await userCart.addProduct(productId, {through: {quantity: quantity}});
     res.redirect('/cart');
-  }
+  } 
   catch(err) {
-    req.flash('error', err.errors);
-    res.redirect('/cart');
+    console.log(err.message);
+    res.redirect('back');
   }
+}
+
+const editDetails = (req, res) => {
+  res.status(200).render('add-product', {
+    pageTitle: 'Add Products',
+    pagePath: '/product',
+    editValues: req.product,
+    allowEdit: (req.query.mode == 'edit'),
+    errors: req.flash('error'),
+    body: req.flash('body')        
+  });
 }
 
 exports.drop = async (req, res, next) => {

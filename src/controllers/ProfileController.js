@@ -2,7 +2,7 @@ const User = require('../data/model/user.model');
 
 exports.page = async (req, res, next) => {
   try {
-    const userProduct = await req.user.getProducts();        
+    const userProduct = await req.user.getProducts();    
     return res.status(200).render('profile', {
       pageTitle: req.user.name,
       pagePath: '/profile',
