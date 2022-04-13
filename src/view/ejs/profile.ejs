@@ -38,13 +38,19 @@
               </div>
               <div class="card__actions">
                 <% if(isLoggedIn) { %>
-                  <form method="POST"
-                    action="/cart/<%= item.id %><%= profile.id != item.userId ? '' : '?mode=edit'%>">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-                    <button type="submit" class="btn">
-                      <%= profile.id != item.userId ? 'Add to Cart' : 'Update product' %>
-                    </button>
-                  </form>
+                  <% if(profile.id != item.userId) { %>
+                    <form method="POST"
+                      action="/cart/<%= item.id %>">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken%>">
+                      <button type="submit" class="btn">
+                        Add to Cart
+                      </button>
+                    </form>
+                  <% } else {%>
+                    <a class="btn" href="/product?mode=edit&id=<%= item.id%>">
+                      Update product details
+                    </a>
+                  <% }%>
                 <% } %>
                 <a href="/product/<%= item.id %>" class="btn">
                   Details

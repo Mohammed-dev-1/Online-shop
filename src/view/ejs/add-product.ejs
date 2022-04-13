@@ -8,14 +8,14 @@
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
   <main>
-    <form class="product-form" action="/product" method="POST" enctype="multipart/form-data">
+    <form class="product-form" action="/product<%= editMode ? '?mode=edit&id='+productDetails.id : '' %>" method="POST" enctype="multipart/form-data">
       <div class="form-control">
         <label for="title">Title</label>
         <input 
           type="text" 
           name="title" 
           id="title"
-          value="<%= body.length ? body[0].title : '' %>"  
+          value="<%= body.length ? body[0].title : '' %><%= productDetails ? productDetails.title : '' %>"  
         >
         
         <label for="title">Price</label>
@@ -23,7 +23,7 @@
           type="number" 
           name="price" 
           id="price"
-          value="<%= body.length ? body[0].price : '' %>"  
+          value="<%= body.length ? body[0].price : '' %><%= productDetails ? productDetails.price : '' %>"  
         >
 
         <label for="title">Description</label>
@@ -32,24 +32,32 @@
           id="description" 
           cols="38" 
           rows="10"
-        ><%= body.length ? body[0].description : '' %></textarea>
+        ><%= body.length ? body[0].description : '' %><%= productDetails ? productDetails.description : '' %></textarea>
         
         <label style="margin: 10px 0px;" for="image">
-          <img width="320" height="320" id="image-selected">
-          <div type="button" class="btn">Upload a product panel</div>
+          <img 
+            src="<%= productDetails ? productDetails.imagePath : '' %>" 
+            id="image-selected"
+            alt="Upload a product panel"
+            width="320" 
+            height="320" 
+            class="btn"
+          >
+          <!-- <div type="button" class="btn">Upload a product panel</div> -->
           <input 
             style="display: none;"
             accept="image/*"
             type="file" 
             name="image" 
             id="image"
+            value="<%= productDetails ? productDetails.imagePath : '' %>"
           >
         </label>
       </div>
       
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <button class="btn" type="submit">
-        Add Product
+        <%= editMode ? 'Update product' : 'Add Product' %>
       </button>
     </form>
   </main>

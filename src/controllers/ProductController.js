@@ -1,12 +1,17 @@
 const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
+const { createProduct, updateProduct } = require('./helpers/product.helper');
 
-exports.page = (req, res, next) => {
+exports.page = async (req, res, next) => {
+    let productDetails = req.product;
+
     res.status(200).render('add-product', {
         pageTitle: 'Add Products',
         pagePath: '/product',
         errors: req.flash('error'),
-        body: req.flash('body')        
+        productDetails: productDetails,
+        body: req.flash('body'),
+        editMode: productDetails
     });
 }
 
@@ -27,16 +32,21 @@ exports.details = async (req, res, next) => {
     }
     catch(err) {
         console.log(err.message);
+        res.status(500).redirect('back');
     }
 }
 
 exports.create = async (req, res, next) => {
-    const {title, price, description} = req.body;
-    const imagePath = req.files.image[0].path;
-    console.log(imagePath);
-    console.log(req.files.image);
+    const editMode = (req.query.mode == 'edit');
+    // req.body.imagePath = req.files.image[0].path;
+    console.log(req.files);
+
     try {
-        await req.user.createProduct({title,price,description,imagePath});
+        if(editMode) {
+            await updateProduct(req, req.body);
+        } else {
+            await createProduct(req, req.body)
+        }
         res.status(201).redirect('/');
     } catch (error) {
         console.log(error.message);
