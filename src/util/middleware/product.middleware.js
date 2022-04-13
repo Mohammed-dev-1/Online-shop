@@ -1,5 +1,34 @@
 const Product = require('../../data/model/product.model');
 
+exports.editMode = async (req, res, next) => {
+  const productId = req.query.id ? req.query.id : 0;  
+  const editMode = (req.query.mode == 'edit');
+  let product = {};
+
+  if(editMode) {
+    try {
+      product = await Product.findByPk(productId);
+      //Only Same user can be edit it.
+      if(product.userId != req.user.id) {
+        req.flash('error', [{message:'Only owner of product can edit it.'}]);
+        res.redirect('/profile');
+        return;
+      } 
+
+      req.product = product;      
+      return next();
+    } 
+    catch (err) {
+      console.log('edit mode: ', err.message);
+      res.status(500).redirect('back');
+      return;
+    }
+  }
+
+  req.product = null;
+  next();
+}
+
 // exports.sameUser = async (req, res, next) => {
 //   const productId = +req.params.id
 //   let product = {};
@@ -31,32 +60,3 @@ const Product = require('../../data/model/product.model');
 //   req.product = product;
 //   next();
 // }
-
-exports.editMode = async (req, res, next) => {
-  const productId = req.query.id ? req.query.id : 0;
-  const editMode = (req.query.mode == 'edit');
-  let product = {};
-
-  if(editMode) {
-    try {
-      product = await Product.findByPk(productId);
-
-      if(product.userId != req.user.id) {
-        req.flash('error', [{message:'Only owner of product can edit it.'}]);
-        res.redirect('/profile');
-        return;
-      } 
-
-      req.product = product;
-      return next();
-    } 
-    catch (err) {
-      console.log(err.message);
-      res.status(500).redirect('back');
-      return;
-    }
-  }
-
-  req.product = null;
-  next();
-}

@@ -11,6 +11,7 @@ const {
   TWO_HOURS,
   bodyParser,
   cookieParser,
+  methodOverride,
   sqlSessionConnection, 
   adminRoutes, 
   authRoutes, 
@@ -56,6 +57,8 @@ app.use(
   })
 );
 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'))
 //for testing api
 app.use('/api', authAPI);
 
@@ -100,6 +103,6 @@ db.sync({ force: false })
       console.log(`Your app is runing on: http://localhost:${port}`)
     },
     err => {
-      console.log(err);
+      console.log('Database: ', err);
     }
   );

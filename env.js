@@ -7,7 +7,7 @@ exports.flash = require('connect-flash');
 exports.csrf = require('csurf');
 exports.multer = require('multer');
 exports.cookieParser = require('cookie-parser');
-
+exports.methodOverride = require('method-override');
 
 exports.db = require('./src/util/connection');
 exports.sqlSessionConnection = require("connect-session-sequelize")(this.session.Store);

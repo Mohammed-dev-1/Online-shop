@@ -8,7 +8,12 @@
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
   <main>
-    <form class="product-form" action="/product<%= editMode ? '?mode=edit&id='+productDetails.id : '' %>" method="POST" enctype="multipart/form-data">
+    <form 
+      class="product-form" 
+      action="/product<%= editMode ? '?_method=PUT&mode=edit&id='+productDetails.id : '' %>" 
+      method="POST" 
+      enctype="multipart/form-data"
+    >
       <div class="form-control">
         <label for="title">Title</label>
         <input 
@@ -55,6 +60,9 @@
         </label>
       </div>
       
+      <% if(editMode) { %>
+        <!-- <input type="hidden" name="_method" value="PUT"> -->
+      <% } %>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <button class="btn" type="submit">
         <%= editMode ? 'Update product' : 'Add Product' %>
