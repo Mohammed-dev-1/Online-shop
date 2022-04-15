@@ -58,7 +58,14 @@ app.use(
 );
 
 // override with POST having ?_method=DELETE
-app.use(methodOverride('_method'))
+// app.use(methodOverride('_method'))
+app.use((req, res, next) => {
+  if(req.body._method != undefined) {
+    req.method = req.body._method;
+  }
+
+  next();
+})
 //for testing api
 app.use('/api', authAPI);
 

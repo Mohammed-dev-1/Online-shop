@@ -10,7 +10,7 @@
   <main>
     <form 
       class="product-form" 
-      action="/product<%= editMode ? '?_method=PUT&mode=edit&id='+productDetails.id : '' %>" 
+      action="/product/<%= productDetails.id %><%= optionMode ? '?mode=option' : '' %>" 
       method="POST" 
       enctype="multipart/form-data"
     >
@@ -60,12 +60,12 @@
         </label>
       </div>
       
-      <% if(editMode) { %>
-        <!-- <input type="hidden" name="_method" value="PUT"> -->
+      <% if(optionMode) { %>
+        <input type="hidden" name="_method" value="PUT">
       <% } %>
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <button class="btn" type="submit">
-        <%= editMode ? 'Update product' : 'Add Product' %>
+        <%= optionMode ? 'Update product' : 'Add Product' %>
       </button>
     </form>
   </main>

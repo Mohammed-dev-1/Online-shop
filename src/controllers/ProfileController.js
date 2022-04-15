@@ -8,6 +8,7 @@ exports.page = async (req, res, next) => {
       pagePath: '/profile',
       profile: req.user,
       products: userProduct,
+      userId: req.user.id,
       errors: req.flash('error')
     });
   } 

@@ -95,6 +95,12 @@ main {
   padding: 1rem;
 }
 
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .card__content p {
   text-align: left;
   font-size: .8rem;

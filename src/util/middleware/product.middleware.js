@@ -1,16 +1,16 @@
 const Product = require('../../data/model/product.model');
 
-exports.editMode = async (req, res, next) => {
-  const productId = req.query.id ? req.query.id : 0;  
-  const editMode = (req.query.mode == 'edit');
+exports.adminOption = async (req, res, next) => {
+  const productId = req.params.id ? req.params.id : 0;  
+  const optionMode = (req.query.mode == 'option');
   let product = {};
-
-  if(editMode) {
+  
+  if(optionMode) {
     try {
       product = await Product.findByPk(productId);
       //Only Same user can be edit it.
       if(product.userId != req.user.id) {
-        req.flash('error', [{message:'Only owner of product can edit it.'}]);
+        req.flash('error', [{message:'Only owner of product can do it.'}]);
         res.redirect('/profile');
         return;
       } 
@@ -19,7 +19,7 @@ exports.editMode = async (req, res, next) => {
       return next();
     } 
     catch (err) {
-      console.log('edit mode: ', err.message);
+      console.log('Option mode: ', err.message);
       res.status(500).redirect('back');
       return;
     }

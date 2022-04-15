@@ -1,12 +1,11 @@
 exports.imageTypeValidation = (value, {req, location, path}) => {
-  const editMode = (req.query.mode == 'edit');
+  const optionMode = (req.query.mode == 'option');
   
   //Skip validation for editing mode...
-  if(editMode) {
+  if(optionMode) {
     return true;
   } 
 
-  console.log('test after');
   //Check mimeType for creating mode...
   return Object.keys(req.files).length == 0 ? 
     Promise.reject('Image should be with .jpg, .png, .jpeg mimeType.') : true;

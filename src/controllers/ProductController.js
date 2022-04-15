@@ -2,6 +2,7 @@ const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 
 exports.page = async (req, res, next) => {
+    //Recive product after validations..
     let productDetails = req.product;
 
     res.status(200).render('add-product', {
@@ -10,7 +11,7 @@ exports.page = async (req, res, next) => {
         errors: req.flash('error'),
         productDetails: productDetails,
         body: req.flash('body'),
-        editMode: productDetails
+        optionMode: productDetails
     });
 }
 
@@ -44,8 +45,6 @@ exports.update = async (req, res, next) => {
         payload.imagePath = req.files.image[0].path;
     }
 
-    console.log(payload);
-
     try {
         req.product.set(payload);
         await req.product.save();
@@ -55,7 +54,6 @@ exports.update = async (req, res, next) => {
         console.log('update error: ', err.message);
         res.redirect('back');
     }
-
 }
 
 exports.create = async (req, res, next) => {
