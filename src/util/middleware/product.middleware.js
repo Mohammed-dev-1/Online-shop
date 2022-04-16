@@ -1,8 +1,13 @@
 const Product = require('../../data/model/product.model');
 
 exports.adminOption = async (req, res, next) => {
-  const productId = req.params.id ? req.params.id : 0;  
-  const optionMode = (req.query.mode == 'option');
+  const optionMode = (
+    req.method == 'PUT' || 
+    req.method == 'PATCH' || 
+    req.method == 'DELETE' ||
+    req.query.mode == 'option'
+  );
+  const productId = req.query.id;  
   let product = {};
   
   if(optionMode) {

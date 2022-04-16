@@ -1,6 +1,9 @@
 exports.imageTypeValidation = (value, {req, location, path}) => {
-  const optionMode = (req.query.mode == 'option');
-  
+  const optionMode = (
+    req.method == 'PUT' || 
+    req.method == 'PATCH'
+  );
+
   //Skip validation for editing mode...
   if(optionMode) {
     return true;

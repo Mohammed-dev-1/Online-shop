@@ -2,12 +2,12 @@ const Product = require('../data/model/product.model');
 const User = require('../data/model/user.model');
 
 exports.page = async (req, res, next) => {
-    //Recive product after validations..
+    //Recive product after validations, or set it to null
     let productDetails = req.product;
 
     res.status(200).render('add-product', {
         pageTitle: 'Add Products',
-        pagePath: '/product',
+        pagePath: '/product/add',
         errors: req.flash('error'),
         productDetails: productDetails,
         body: req.flash('body'),
@@ -72,8 +72,8 @@ exports.create = async (req, res, next) => {
 
 exports.drop = async (req, res, next) => {
     try {
-        await Product.set([]);
-        res.status(200).redirect('/');
+        await req.product.destroy();
+        res.status(200).redirect('back');
     } 
     catch (error) {
         console.log(error);

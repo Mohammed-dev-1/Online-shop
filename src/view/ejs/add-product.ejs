@@ -10,7 +10,7 @@
   <main>
     <form 
       class="product-form" 
-      action="/product/<%= productDetails.id %><%= optionMode ? '?mode=option' : '' %>" 
+      action="/product/<%= productDetails ? `?id=${productDetails.id}` : '' %><%= optionMode?'&_method=PUT':''%>" 
       method="POST" 
       enctype="multipart/form-data"
     >
@@ -20,7 +20,7 @@
           type="text" 
           name="title" 
           id="title"
-          value="<%= body.length ? body[0].title : '' %><%= productDetails ? productDetails.title : '' %>"  
+          value="<%= body.length ? body[0].title : '' %><%= productDetails && !body.length ? productDetails.title : '' %>"  
         >
         
         <label for="title">Price</label>
@@ -28,7 +28,7 @@
           type="number" 
           name="price" 
           id="price"
-          value="<%= body.length ? body[0].price : '' %><%= productDetails ? productDetails.price : '' %>"  
+          value="<%= body.length ? body[0].price : '' %><%= productDetails&&!body.length ? productDetails.price : '' %>"  
         >
 
         <label for="title">Description</label>
@@ -37,11 +37,11 @@
           id="description" 
           cols="38" 
           rows="10"
-        ><%= body.length ? body[0].description : '' %><%= productDetails ? productDetails.description : '' %></textarea>
+        ><%= body.length ? body[0].description : '' %><%= productDetails&&!body.length ? productDetails.description : '' %></textarea>
         
         <label style="margin: 10px 0px;" for="image">
           <img 
-            src="<%= productDetails ? productDetails.imagePath : '' %>" 
+            src="/<%= productDetails ? productDetails.imagePath : '' %>" 
             id="image-selected"
             alt="Upload a product panel"
             width="320" 

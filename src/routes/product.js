@@ -6,10 +6,10 @@ const { ProductRequestValidation } = require('../Requests/ProductRequest');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', isAuthorize, adminOption, page);
+router.get('/add', isAuthorize, adminOption, page);
 router.get('/:id', details);
-router.put('/:id', isAuthorize, ProductRequestValidation(), adminOption, update);
+router.put('/', isAuthorize, ProductRequestValidation(), adminOption, update);
 router.post('/', isAuthorize, ProductRequestValidation(), create);
-router.delete('/:id', isAuthorize, adminOption, drop);
+router.delete('/', isAuthorize, adminOption, drop);
 
 module.exports = router;
