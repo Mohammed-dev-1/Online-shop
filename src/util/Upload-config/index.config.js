@@ -1,4 +1,4 @@
-const { multer, path } = require('../../../env');
+const { multer, path } = require('../../module/package.module');
 const { folderStoreValidation } = require('./folderValidation');
 const storePath = 'src/product-panel';
 
