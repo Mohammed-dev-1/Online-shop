@@ -118,11 +118,11 @@ class Test {
     return this
   }
 }
-console.log([1,2,3,4,5].filter(e=>e>2).map(e=>e*2));
+// console.log([1,2,3,4,5].filter(e=>e>2).map(e=>e*2));
 let testClass = new Test();
-console.log(testClass.multiNumber().number); //? 
-console.log(testClass.incNumber().number);
-console.log(testClass.incNumber().multiNumber().number);
+// console.log(testClass.multiNumber().number); //? 
+// console.log(testClass.incNumber().number);
+// console.log(testClass.incNumber().multiNumber().number);
 
 function ElementRef(name, subName) {
   this.name = name;
@@ -135,5 +135,35 @@ ElementRef.prototype.unicha = function() {
 
 
 const test = new ElementRef('mohammed', 'vector'); //? console.log(test)
-test //?
-console.log(test.__proto__.unicha);
+//?
+const { existsSync } = require('fs');
+// console.log(test.__proto__.unicha);
+
+const path = require('path');
+// const imagePath = 'src/product-panel2'; 
+// console.log(existsSync(imagePath)); 
+// if (existsSync(imagePath)) {
+//   console.log('hi');
+// }
+
+// const {exec} = require('child_process');
+
+// exec(`mkdir ${path.join(__dirname, 'src', 'gu')}`, (err, stdout, stderr)=> {
+//   if(err) {
+//     console.log(err);
+//     return;
+//   }
+//   if(stdout) {
+//     console.log(stdout);
+//     return;
+//   }
+//   console.log(stderr);
+// })
+
+const anonymos = (path, callBack) => {
+  callBack(path);
+}
+
+anonymos('test',(test)=> {
+  console.log(test)
+})

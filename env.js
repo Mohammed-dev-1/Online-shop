@@ -28,7 +28,9 @@ exports.authAPI = require('./src/routes/API/auth');
 const { initUser } = require('./src/util/middleware/auth.middleware');
 exports.initUserMeddleware = initUser;
 
-exports.fileUploadConfigrations = require('./src/util/Upload-config/index.config');
+const {fileUploadConfigrations, storePath} = require('./src/util/Upload-config/index.config');
+exports.fileUploadConfigrations = fileUploadConfigrations;
+exports.storePath = storePath;
 
 const { RunRelation } = require('./src/data/index');
 exports.RunRelation = RunRelation;
