@@ -13,7 +13,7 @@ const Sequelize = require('sequelize');
 const db = new Sequelize('online-shop', 'root', '', {
   dialect: 'mysql',
   host: 'localhost',
-  port: 3307,
+  port: 3306,
   logging: false
 })
 

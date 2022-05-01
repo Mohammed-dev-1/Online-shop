@@ -1,11 +1,16 @@
-const { multer, path } = require('../../../env');
+const { multer, path } = require('../../module/package.module');
+const { folderStoreValidation } = require('./folderValidation');
+const storePath = 'src/product-panel';
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, callBack) => {
     /**
      * first arg for passing an error
      * second one is a folder to store image inside of it
      */
-    callBack(null, 'src/product-panel');
+    folderStoreValidation(storePath, (path) => {
+      callBack(null, path);
+    })
   },
   filename: (req, file, callBack) => {
     /**
@@ -36,4 +41,4 @@ const fileUploadConfigrations = upload.fields([
   }
 ]);
 
-module.exports = fileUploadConfigrations;
+module.exports = { fileUploadConfigrations, storePath };

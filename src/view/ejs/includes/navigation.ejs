@@ -1,25 +1,21 @@
 <header class="main-header">
-  <nav class="main-header__nav">
+  <span class="main-header__item">
+    <a class="<%= pagePath == '/' ? 'active' : '' %>" href="/">VeCommerce</a>
+  </span>
+  <span onclick="navOpen()" class="menu-bar btn">menu</span>
+  <nav id="nav-bar" class="main-header__nav">
+    <span onclick="navClose()" class="close-nav-btn">X</span>
     <ul class="main-header__item-list">
       <% if (isLoggedIn) { %>
         <li class="main-header__item">
-          <a 
-            class="<%= pagePath == '/profile' ? 'active' : '' %>" 
-            href="/profile"
-          ><%= username %></a>
+          <a class="<%= pagePath == '/profile' ? 'active' : '' %>" href="/profile">
+            <%= username %>
+          </a>
         </li>
-      <% } %>
-      <li class="main-header__item">
-        <a 
-          class="<%= pagePath == '/' ? 'active' : '' %>" 
-          href="/"
-        >Shop</a>
-      </li>
-      <% if (isLoggedIn) { %>
         <li class="main-header__item">
           <a 
-            class="<%= pagePath == '/product' ? 'active' : '' %>" 
-            href="/product"
+            class="<%= pagePath == '/product/add' ? 'active' : '' %>" 
+            href="/product/add"
           >Add Product</a>
         </li>
         <li class="main-header__item">
@@ -37,7 +33,7 @@
         <li class="main-header__item">
           <form action="/auth/logout" method="POST">
             <input type="hidden" name="_csrf" value="<%= csrfToken%>">
-            <button type="submit" class="user_button">
+            <button type="submit" class="btn">
               Logout
             </button>
           </form>
@@ -59,3 +55,4 @@
     </ul>
   </nav>
 </header>
+<%- include('./scripts/nav.ejs') %>

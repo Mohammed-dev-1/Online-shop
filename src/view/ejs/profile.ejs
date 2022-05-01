@@ -6,7 +6,7 @@
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
   <main class="">
-    <h3><%= profile.name %></h3>
+    <h1><%= profile.name %></h1>
     <p>Email: <%= profile.email %></p>
     <hr>
     <div>
@@ -16,6 +16,15 @@
           <% for(let item of products) { %>
             <article class="card product-item">
               <header class="card__header">
+                <% if (userId == item.userId) { %>
+                  <form 
+                    class="delete-from" 
+                    action="/product/<%= `?id=${item.id}&_method=DELETE` %>" 
+                    method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="btn delete">Delete</button>
+                  </form>
+                <% } %>
                 <p class="product__title">
                   <%= item.title %>
                 </p>
@@ -38,7 +47,7 @@
               </div>
               <div class="card__actions">
                 <% if(isLoggedIn) { %>
-                  <% if(profile.id != item.userId) { %>
+                  <% if(userId != item.userId) { %>
                     <form method="POST"
                       action="/cart/<%= item.id %>">
                       <input type="hidden" name="_csrf" value="<%= csrfToken%>">
@@ -46,11 +55,11 @@
                         Add to Cart
                       </button>
                     </form>
-                  <% } else {%>
-                    <a class="btn" href="/product?mode=edit&id=<%= item.id%>">
+                  <% } else { %>
+                    <a class="btn" href="/product/add?mode=option&id=<%= item.id%>">
                       Update product details
                     </a>
-                  <% }%>
+                  <% } %>
                 <% } %>
                 <a href="/product/<%= item.id %>" class="btn">
                   Details

@@ -1,56 +1,34 @@
-const {
-  db,
-  app,
-  port,
-  cors, 
-  csrf,
-  path, 
-  flash,
-  session,
-  express,
-  TWO_HOURS,
-  bodyParser,
-  cookieParser,
-  methodOverride,
-  sqlSessionConnection, 
-  adminRoutes, 
-  authRoutes, 
-  cartRoutes, 
-  orderRoutes, 
-  homeRoutes,
-  profileRoutes,
-  productRoutes,
-  page404Routes, 
-  authAPI, 
-  initUserMeddleware,
-  fileUploadConfigrations,
-  RunRelation
-} = require('./env');
+const db = require('./src/util/connection');
+const package = require('./src/module/package.module');
+const userModule = require('./src/module/user.module');
+const route = require('./src/module/route.module');
+const uploadModule = require('./src/util/Upload-config/index.config');
+const env = require('./env');
 
 //Set EJS as render engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src', 'view', 'ejs'));
+package.app.set('view engine', 'ejs');
+package.app.set('views', package.path.join(__dirname, 'src', 'view', 'ejs'));
 
 //use cors to enable on local server
-app.use(cors());
+package.app.use(package.cors());
 //recive post request with json format
-app.use(bodyParser.json());
+package.app.use(package.bodyParser.json());
 //use body pareser to parse our html page
-app.use(bodyParser.urlencoded({extended: false}));
+package.app.use(package.bodyParser.urlencoded({extended: false}));
 //use express static method to load all css files
-app.use(express.static(path.join(__dirname, 'src', 'public')));
+package.app.use(package.express.static(package.path.join(__dirname, 'src', 'public')));
 //use express static method to load images, add /product-panel to load just images with this path
-app.use('/src/product-panel', express.static(path.join(__dirname, 'src', 'product-panel')));
+package.app.use(`/${uploadModule.storePath}`, package.express.static(package.path.join(uploadModule.storePath)));
 
-app.use(
-  session({
+package.app.use(
+  package.session({
     secret: 'Vector',
-    store: new sqlSessionConnection({db: db}),
+    store: new package.sqlSessionConnection({db: db}),
     resave: false,
     proxy: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: TWO_HOURS,
+      maxAge: env.TWO_HOURS,
       sameSite: true,
       secure: false
     }
@@ -58,25 +36,31 @@ app.use(
 );
 
 // override with POST having ?_method=DELETE
-app.use(methodOverride('_method'))
+// package.app.use(methodOverride('_method'))
+package.app.use((req, res, next) => {
+  if(req.query._method != undefined) {
+    req.method = req.query._method;
+  }
+  next();
+})
 //for testing api
-app.use('/api', authAPI);
+package.app.use('/api', route.authAPI);
 
 //Alterantive package to upload files...
-// app.use(fileUpload({
+// package.app.use(fileUpload({
 //   createParentPath: true
 // }));
-app.use(cookieParser('Vector'));
+package.app.use(package.cookieParser('Vector'));
 //check authorization user for every request...
-app.use(initUserMeddleware);
+package.app.use(userModule.initUser);
 //init flash message for every request...
-app.use(flash());
+package.app.use(package.flash());
 //use multer to handle files
-app.use(fileUploadConfigrations);
+package.app.use(uploadModule.fileUploadConfigrations);
 //init csrf token for more scure
-app.use(csrf({cookie: true}));
+package.app.use(package.csrf({cookie: true}));
 //set a local variables to all respones...
-app.use((req, res, next) => {
+package.app.use((req, res, next) => {
   res.locals.csrfToken = req.csrfToken();
   res.locals.isLoggedIn = !!req.user;
   res.locals.username = !!req.user ? req.user.name : '';
@@ -84,23 +68,23 @@ app.use((req, res, next) => {
 })
 
 //load all express routes
-app.use('/auth', authRoutes);
-app.use('/admin', adminRoutes);
-app.use('/cart', cartRoutes);
-app.use('/order', orderRoutes);
-app.use('/profile', profileRoutes);
-app.use('/product', productRoutes);
-app.use(homeRoutes);
-app.use(page404Routes);
+package.app.use('/auth', route.authRoutes);
+package.app.use('/admin', route.adminRoutes);
+package.app.use('/cart', route.cartRoutes);
+package.app.use('/order', route.orderRoutes);
+package.app.use('/profile', route.profileRoutes);
+package.app.use('/product', route.productRoutes);
+package.app.use(route.homeRoutes);
+package.app.use(route.page404Routes);
 
 //Define relationships
-RunRelation();
+userModule.RunRelation();
 
 db.sync({ force: false })
   .then(
     _ => {
-      app.listen(port);
-      console.log(`Your app is runing on: http://localhost:${port}`)
+      package.app.listen(env.port);
+      console.log(`Your app is runing on: http://localhost:${env.port}`)
     },
     err => {
       console.log('Database: ', err);
