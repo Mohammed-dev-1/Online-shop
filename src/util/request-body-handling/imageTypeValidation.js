@@ -6,7 +6,6 @@ exports.imageTypeValidation = (value, {req, location, path}) => {
     return true;
   } 
 
-  console.log('test after');
   //Check mimeType for creating mode...
   return Object.keys(req.files).length == 0 ? 
     Promise.reject('Image should be with .jpg, .png, .jpeg mimeType.') : true;

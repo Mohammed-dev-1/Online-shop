@@ -5,10 +5,10 @@
 <body>
   <%- include('./includes/navigation.ejs') %> 
   <%- include('./util/errors-message.ejs', {errors}) %> 
-  <main class="profile">
-    <h1><%= profile.name %></h1>
+  <main class="">
+    <h3><%= profile.name %></h3>
     <p>Email: <%= profile.email %></p>
-
+    <hr>
     <div>
       <h4>Products: </h4>
       <div class="grid">
@@ -63,7 +63,7 @@
         <% } %>
       </div>
     </div>
-
+    <hr>
     <a href="/" class="home_button">
       Back to home..
     </a>
