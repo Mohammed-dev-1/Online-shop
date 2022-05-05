@@ -17,6 +17,8 @@ const User = db.define('user', {
     allowNull: false,
     unique: true
   },
+  token: SQL.STRING,
+  tokenExpirationDate: SQL.DATE,
   password: {
     type: SQL.STRING,
     allowNull: false
