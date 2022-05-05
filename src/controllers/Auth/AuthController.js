@@ -103,8 +103,7 @@ exports.resetPassword = async(req, res, next) => {
         text: 'Let\'s reset your password.',
         html: `
           <h5>You have only two hours to reset your password!</h5>
-          <p>So click to the link down blow to reset it.</p>
-          <a href='http://localhost:3000/auth/reset/${user.token}'>Click here</a>
+          <p>So click to the <a href="http://localhost:3000/auth/reset/${user.token}" target="_blank">link</a> to reset it.</p>
         `
       });
     });
@@ -120,13 +119,17 @@ exports.resetPasswordConfirmation = async(req, res, next) => {
   const user = req.user;
 
   try {
-    user.tokenExpirationDate = Date.now() + TWO_HOURS;
-    user.password = await bcrypt.hash(password, 12);
-    await user.save();
+    crypto.randomBytes(32, async(err, buffer) => {
+      user.token = buffer.toString('hex');
+      user.tokenExpirationDate = Date.now() + TWO_HOURS;
+      user.password = await bcrypt.hash(password, 12);
+      await user.save();
 
-    req.body.email = req.user.email;
-    req.flash('body', req.body)
-    res.redirect('/auth/login');
+      req.body.email = req.user.email;
+      req.flash('body', req.body)
+      
+      res.redirect('/auth/login');
+    });
   }
   catch(err) {
     console.log(`resetPasswordConfirmation: ${err.message}`);

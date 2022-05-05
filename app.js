@@ -24,7 +24,7 @@ package.app.use(
   package.session({
     secret: 'Vector',
     store: new package.sqlSessionConnection({db: db}),
-    resave: false,
+    resave: true, //false to forbid users comes from external links, true to enable 
     proxy: true,
     saveUninitialized: false,
     cookie: {
