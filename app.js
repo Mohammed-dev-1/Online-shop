@@ -83,8 +83,9 @@ userModule.RunRelation();
 db.sync({ force: false })
   .then(
     _ => {
-      package.app.listen(env.port);
-      console.log(`Your app is runing on: http://localhost:${env.port}`)
+      console.log('DB connected successfully!');
+      package.app.listen(env.port, env.hostname);
+      console.log(`Your app is runing on: http://${env.hostname}:${env.port}`)
     },
     err => {
       console.log('Database: ', err);
